@@ -16,10 +16,10 @@ namespace esphome
             void dump_config() override;
             void update() override;
 
-            void set_percentage_sensor(sensor::Sensor *percentage_sensor) { this->percentage_sensor_ = percentage_sensor; }
+            void set_battery_level_sensor(sensor::Sensor *battery_level_sensor) { this->battery_level_sensor_ = battery_level_sensor; }
 
         protected:
-            sensor::Sensor *percentage_sensor_;
+            sensor::Sensor *battery_level_sensor_;
         };
     } // namespace max17048
 } // namespace esphome

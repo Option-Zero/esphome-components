@@ -20,7 +20,7 @@ namespace esphome
         {
             ESP_LOGCONFIG(TAG, "MAX17048:");
             LOG_I2C_DEVICE(this);
-            LOG_SENSOR("  ", "Percentage", this->percentage_sensor_);
+            LOG_SENSOR("  ", "Percentage", this->battery_level_sensor_);
         }
 
         void MAX17048Component::update()
@@ -32,7 +32,7 @@ namespace esphome
                 return;
             }
             float percentage = perentage_raw / 256.0f;
-            this->percentage_sensor_->publish_state(percentage);
+            this->battery_level_sensor_->publish_state(percentage);
         }
 
     } // namespace max17048
