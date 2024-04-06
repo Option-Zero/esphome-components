@@ -11,19 +11,19 @@ namespace esphome
 
         constexpr uint16_t REG_PCT = 0x4;
 
-        void MAX17048Sensor::setup()
+        void MAX17048Component::setup()
         {
             ESP_LOGCONFIG(TAG, "Setting up max17048");
         }
 
-        void MAX17048Sensor::dump_config()
+        void MAX17048Component::dump_config()
         {
             ESP_LOGCONFIG(TAG, "MAX17048:");
             LOG_I2C_DEVICE(this);
             LOG_SENSOR("  ", "Percentage", this->percentage_sensor_);
         }
 
-        void MAX17048Sensor::update()
+        void MAX17048Component::update()
         {
             uint16_t perentage_raw;
             if (!read_byte_16(REG_PCT, &perentage_raw))

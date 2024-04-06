@@ -4,11 +4,12 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/component.h"
 
+// src/main.cpp:37:11: error: 'MAX17048Component' in namespace 'esphome::max17048' does not name a type
 namespace esphome
 {
     namespace max17048
     {
-        class MAX17048Sensor : public PollingComponent, public sensor::Sensor, public i2c::I2CDevice
+        class MAX17048Component : public PollingComponent, public sensor::Sensor, public i2c::I2CDevice
         {
         public:
             void setup() override;
