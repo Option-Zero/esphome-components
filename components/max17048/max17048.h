@@ -16,10 +16,14 @@ namespace esphome
             void dump_config() override;
             void update() override;
 
-            void set_battery_level_sensor(sensor::Sensor *battery_level_sensor) { this->battery_level_sensor_ = battery_level_sensor; }
+            void set_battery_v_sensor(sensor::Sensor *battery_v_sensor) { this->battery_v_sensor_ = battery_v_sensor; }
+            void set_battery_soc_sensor(sensor::Sensor *battery_soc_sensor) { this->battery_soc_sensor_ = battery_soc_sensor; }
+            void set_battery_current_sensor(sensor::Sensor *battery_current_sensor) { this->battery_current_sensor_ = battery_current_sensor; }
 
         protected:
-            sensor::Sensor *battery_level_sensor_;
+            sensor::Sensor *battery_v_sensor_;
+            sensor::Sensor *battery_soc_sensor_;
+            sensor::Sensor *battery_current_sensor_;
         };
     } // namespace max17048
 } // namespace esphome
