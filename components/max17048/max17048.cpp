@@ -64,7 +64,7 @@ namespace esphome
 
             if (this->battery_soc_rate_sensor_ != nullptr)
             {
-                if (!read_byte_16(REG_SOC, &raw_reading))
+                if (!read_byte_16(REG_CRATE, &raw_reading))
                 {
                     ESP_LOGW(TAG, "'%s' - unable to read soc_rate register", this->name_.c_str());
                     return;
