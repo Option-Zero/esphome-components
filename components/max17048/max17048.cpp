@@ -40,17 +40,6 @@ namespace esphome
         void MAX17048Component::update()
         {
             uint16_t raw_reading;
-            if (this->battery_soc_rate_sensor_ != nullptr)
-            {
-                if (!read_byte_16(REG_CRATE, &raw_reading))
-                {
-                    ESP_LOGW(TAG, "'%s' - unable to read soc_rate register", this->name_.c_str());
-                    return;
-                }
-                float soc_rate = (float)raw_reading * 0.208; // Current rate lsb is 0.208%/hr per data sheet
-                this->battery_soc_rate_sensor_->publish_state(soc_rate);
-            }
-
             if (this->battery_v_sensor_ != nullptr)
             {
                 if (!read_byte_16(REG_VCELL, &raw_reading))
@@ -69,8 +58,19 @@ namespace esphome
                     ESP_LOGW(TAG, "'%s' - unable to read percentage register", this->name_.c_str());
                     return;
                 }
-                float percentage = (float)raw_reading / 256.0; // SoC lsb is 1/256% per data sheet
+                float percentage = (float)raw_reading / 256; // SoC lsb is 1/256% per data sheet
                 this->battery_soc_sensor_->publish_state(percentage);
+            }
+
+            if (this->battery_soc_rate_sensor_ != nullptr)
+            {
+                if (!read_byte_16(REG_CRATE, &raw_reading))
+                {
+                    ESP_LOGW(TAG, "'%s' - unable to read soc_rate register", this->name_.c_str());
+                    return;
+                }
+                float soc_rate = (float)(int16_t)raw_reading * 0.208; // Current rate lsb is 0.208%/hr per data sheet
+                this->battery_soc_rate_sensor_->publish_state(soc_rate);
             }
         }
 
