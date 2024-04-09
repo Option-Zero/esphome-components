@@ -10,11 +10,11 @@ namespace esphome
         static const char *const TAG = "max17048";
 
         // Data sheet: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf
-        constexpr uint16_t REG_VCELL = 0x2;      // ADC measurement of VCELL. LSB: 78.125µV/cell
-        constexpr uint16_t REG_SOC = 0x4;        // Battery state of charge.  LSB: 1%/256
-        constexpr uint16_t REG_MODE = 0x6;       // Operating mode
-        constexpr uint16_t REG_VERSION = 0x8;    // Version number
-        constexpr uint16_t REG_HIBRT = 0xB;      // Hibernate threshold. Read/write.     Default: 0x971C
+        constexpr uint16_t REG_VCELL = 0x02;     // ADC measurement of VCELL. LSB: 78.125µV/cell
+        constexpr uint16_t REG_SOC = 0x04;       // Battery state of charge.  LSB: 1%/256
+        constexpr uint16_t REG_MODE = 0x06;      // Operating mode
+        constexpr uint16_t REG_VERSION = 0x08;   // Version number
+        constexpr uint16_t REG_HIBRT = 0x0B;     // Hibernate threshold. Read/write.     Default: 0x971C
         constexpr uint16_t REG_CONFIG = 0x0C;    // Configuration register. Read/write. Default: 0x00FF
         constexpr uint16_t REG_VALRT = 0x14;     // Voltage alert threshold. Read/write. Default: 0x00FF
         constexpr uint16_t REG_CRATE = 0x16;     // Current rate. LSB: 0.208%/hr
@@ -34,7 +34,7 @@ namespace esphome
             LOG_I2C_DEVICE(this);
             LOG_SENSOR("  ", "Voltage (V)", this->battery_v_sensor_);
             LOG_SENSOR("  ", "State of Charge (%)", this->battery_soc_sensor_);
-            LOG_SENSOR("  ", "Current (%/hr)", this->battery_soc_rate_sensor_);
+            LOG_SENSOR("  ", "Discharge Rate (%/hr)", this->battery_soc_rate_sensor_);
         }
 
         void MAX17048Component::update()
@@ -47,7 +47,7 @@ namespace esphome
                     ESP_LOGW(TAG, "'%s' - unable to read voltage register", this->name_.c_str());
                     return;
                 }
-                float voltage = raw_reading * 78.125f / 1000000.0f; // VCELL lsb is 78.125µV/cell per data sheet
+                float voltage = (float)raw_reading * 78.125 / 1000000; // VCELL lsb is 78.125µV/cell per data sheet
                 this->battery_v_sensor_->publish_state(voltage);
             }
 
@@ -58,7 +58,7 @@ namespace esphome
                     ESP_LOGW(TAG, "'%s' - unable to read percentage register", this->name_.c_str());
                     return;
                 }
-                float percentage = raw_reading / 256.0f; // SoC lsb is 1/256% per data sheet
+                float percentage = (float)raw_reading / 256.0; // SoC lsb is 1/256% per data sheet
                 this->battery_soc_sensor_->publish_state(percentage);
             }
 
@@ -69,7 +69,7 @@ namespace esphome
                     ESP_LOGW(TAG, "'%s' - unable to read soc_rate register", this->name_.c_str());
                     return;
                 }
-                float soc_rate = raw_reading * 0.208f; // Current rate lsb is 0.208%/hr per data sheet
+                float soc_rate = (float)raw_reading * 0.208; // Current rate lsb is 0.208%/hr per data sheet
                 this->battery_soc_rate_sensor_->publish_state(soc_rate);
             }
         }
