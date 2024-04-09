@@ -58,9 +58,14 @@ async def to_code(config):
     await cg.register_component(var, config)
     await i2c.register_i2c_device(var, config)
     
-    battery_v_sensor = await sensor.new_sensor(config[CONF_BATTERY_VOLTAGE])
-    cg.add(var.set_battery_v_sensor(battery_v_sensor))
-    battery_soc_sensor = await sensor.new_sensor(config[CONF_BATTERY_LEVEL])
-    cg.add(var.set_battery_soc_sensor(battery_soc_sensor))
-    battery_current_sensor = await sensor.new_sensor(config[CONF_CURRENT])
-    cg.add(var.set_battery_current_sensor(battery_current_sensor))
+    if CONF_BATTERY_VOLTAGE in config:
+        battery_v_sensor = await sensor.new_sensor(config[CONF_BATTERY_VOLTAGE])
+        cg.add(var.set_battery_v_sensor(battery_v_sensor))
+
+    if CONF_BATTERY_LEVEL in config:
+        battery_soc_sensor = await sensor.new_sensor(config[CONF_BATTERY_LEVEL])
+        cg.add(var.set_battery_soc_sensor(battery_soc_sensor))
+    
+    if CONF_CURRENT in config:
+        battery_current_sensor = await sensor.new_sensor(config[CONF_CURRENT])
+        cg.add(var.set_battery_current_sensor(battery_current_sensor))
