@@ -1,4 +1,12 @@
+external_components:
+  - source: github://Option-Zero/esphome-components@max17048
+    components: [max17048]
 
 sensor:
   - platform: max17048
-    name: "Battery"
+    battery_voltage:
+      name: Battery voltage
+    battery_level:
+      name: Battery level
+    rate:
+      name: Battery discharge rate
