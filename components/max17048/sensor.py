@@ -4,7 +4,7 @@ from esphome.components import i2c, sensor
 from esphome.const import (
     CONF_BATTERY_LEVEL,
     CONF_BATTERY_VOLTAGE,
-    CONF_CURRENT,
+    CONF_RATE,
     CONF_ID,
     DEVICE_CLASS_BATTERY,
     UNIT_HOUR,
@@ -39,7 +39,7 @@ CONFIG_SCHEMA = (
                 device_class=DEVICE_CLASS_BATTERY,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
-            cv.Optional(CONF_CURRENT): sensor.sensor_schema(
+            cv.Optional(CONF_RATE): sensor.sensor_schema(
                 unit_of_measurement=f"{UNIT_PERCENT}/{UNIT_HOUR}",
                 accuracy_decimals=1,  # Actual Resolution: 0.208%/hr
                 device_class=DEVICE_CLASS_BATTERY,
@@ -66,6 +66,6 @@ async def to_code(config):
         battery_soc_sensor = await sensor.new_sensor(config[CONF_BATTERY_LEVEL])
         cg.add(var.set_battery_soc_sensor(battery_soc_sensor))
     
-    if CONF_CURRENT in config:
-        battery_current_sensor = await sensor.new_sensor(config[CONF_CURRENT])
-        cg.add(var.set_battery_current_sensor(battery_current_sensor))
+    if CONF_RATE in config:
+        battery_soc_rate_sensor = await sensor.new_sensor(config[CONF_RATE])
+        cg.add(var.set_battery_soc_rate_sensor(battery_soc_rate_sensor))
