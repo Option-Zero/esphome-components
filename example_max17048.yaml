@@ -1,0 +1,23 @@
+external_components:
+  - source: github://Option-Zero/esphome-components
+    components: [max17048]
+
+sensor:
+  - platform: max17048
+    battery_voltage:
+      name: Battery voltage
+      id: batt_v
+    battery_level:
+      # This uses the SOC (state of charge) value from the MAX17048.
+      # Take it with a grain of salt.
+
+      # There is a sophisticated algorithm that takes into account
+      # the battery's voltage, current, temperature, and more.
+      # However, don't expect it to be too accurate without battery-specific calibration.
+      # As the data sheet says (emphasis mine), the chip has 
+      # "a preloaded ROM model that performs well for *some* batteries."
+      name: Battery level
+      id: batt_pct
+    rate:
+      name: Battery discharge rate
+      id: batt_discharge_rate
